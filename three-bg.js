@@ -13,6 +13,8 @@ import * as THREE from 'three';
 
 const canvas = document.getElementById('bg-canvas');
 if (!canvas) throw new Error('Canvas not found');
+const isMobile = window.innerWidth < 640;
+const pixelRatio = Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2);
 
 // --- Scene setup ---
 const scene = new THREE.Scene();
@@ -28,11 +30,11 @@ const renderer = new THREE.WebGLRenderer({
   powerPreference: 'high-performance',
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setPixelRatio(pixelRatio);
 renderer.setClearColor(0x0a0d12, 0);
 
 // --- Particles ---
-const COUNT = 2400;
+const COUNT = isMobile ? 900 : 2400;
 const positions = new Float32Array(COUNT * 3);
 const colors = new Float32Array(COUNT * 3);
 const sizes = new Float32Array(COUNT);
@@ -77,7 +79,7 @@ geometry.setAttribute('aSpeed', new THREE.BufferAttribute(speeds, 1));
 const particleMaterial = new THREE.ShaderMaterial({
   uniforms: {
     uTime: { value: 0 },
-    uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
+    uPixelRatio: { value: pixelRatio },
   },
   vertexShader: `
     attribute vec3 aColor;
@@ -135,8 +137,8 @@ function createWireframe(geo, color, opacity, z) {
   return mesh;
 }
 
-const wireframe = createWireframe(new THREE.IcosahedronGeometry(6, 1), 0x34d399, 0.12, -5);
-const outerWireframe = createWireframe(new THREE.OctahedronGeometry(10, 0), 0xfbbf24, 0.06, -8);
+const wireframe = createWireframe(new THREE.IcosahedronGeometry(isMobile ? 4.5 : 6, 1), 0x34d399, 0.12, -5);
+const outerWireframe = createWireframe(new THREE.OctahedronGeometry(isMobile ? 7 : 10, 0), 0xfbbf24, 0.06, -8);
 
 // --- Mouse / touch parallax ---
 const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
@@ -157,7 +159,7 @@ window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
 }, { passive: true });
 
 // --- Animation loop ---
@@ -175,8 +177,8 @@ function animate() {
   mouse.tx += (mouse.x - mouse.tx) * 0.04;
   mouse.ty += (mouse.y - mouse.ty) * 0.04;
 
-  camera.position.x = mouse.tx * 3;
-  camera.position.y = -mouse.ty * 3;
+  camera.position.x = mouse.tx * (isMobile ? 1.5 : 3);
+  camera.position.y = -mouse.ty * (isMobile ? 1.5 : 3);
   camera.lookAt(0, 0, 0);
 
   wireframe.rotation.x = elapsed * 0.15;
@@ -185,7 +187,8 @@ function animate() {
   outerWireframe.rotation.y = -elapsed * 0.06;
   outerWireframe.rotation.z = elapsed * 0.04;
 
-  points.rotation.y = elapsed * 0.02;
+  points.rotation.y = elapsed * (isMobile ? 0.035 : 0.02);
+  points.rotation.x = Math.sin(elapsed * 0.12) * 0.08;
 
   renderer.render(scene, camera);
 }

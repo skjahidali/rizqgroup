@@ -121,6 +121,10 @@ function renderRegions() {
 
 // --- 3D Tilt effect ---
 function initTilt() {
+  const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!canHover || reducedMotion) return;
+
   document.querySelectorAll('[data-tilt]').forEach((el) => {
     const max = el.classList.contains('about-card') ? 14 : 8;
 
@@ -166,19 +170,24 @@ function initMobileMenu() {
 
   menuBtn.addEventListener('click', () => {
     menu.classList.add('open');
+    menuBtn.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
   });
 
-  menuClose.addEventListener('click', () => {
+  const closeMenu = () => {
     menu.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
-  });
+  };
+
+  menuClose.addEventListener('click', closeMenu);
 
   links.forEach((link) => {
-    link.addEventListener('click', () => {
-      menu.classList.remove('open');
-      document.body.style.overflow = '';
-    });
+    link.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu.classList.contains('open')) closeMenu();
   });
 }
 
