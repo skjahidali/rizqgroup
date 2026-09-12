@@ -1,16 +1,12 @@
 /**
  * RIZQ ONE — Standalone App Logic
- * 
- * 
- * 
- * 
  * Handles: scroll reveal, 3D tilt cards, mobile menu, service rendering,
  * audience toggle, form submission to Supabase, scroll-to-top.
  */
 
-// --- Config ---
+// --- Supabase config (anon key is safe for client-side use) ---
 const SUPABASE_URL = 'https://vpicgenwfsaxsxnvojjj.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwaWNnZW53ZnNheHN4bnZvampqIiwicm9sISI6ImFub24iLCJpYXQiOjE3ODc4NjgxMTMsImV4cCI6MjEwMzQ0NDExM30.UNUuNvVc5CWLMu0bCTVNn1X3nWl6PvUqLufimjajJgg';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwaWNnZW53ZnNheHN4bnZvampqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc4NjgxMTMsImV4cCI6MjEwMzQ0NDExM30.UNUuNvVc5CWLMu0bCTVNn1X3nWl6PvUqLufimjajJgg';
 
 // --- Data ---
 const B2B_SERVICES = [
@@ -33,15 +29,14 @@ const B2C_SERVICES = [
   { icon: 'bulb', title: 'Business / Entrepreneurship Guidance', desc: 'Turn your idea into a real venture with step-by-step startup mentoring.' },
 ];
 
-const B2B_LINKS = [
-  'Business Consulting', 'Startup & MSME Support', 'IT Consulting',
-  'Website & Software Development', 'App Development', 'Digital Marketing',
-  'Import & Export', 'Business Support',
-];
+const B2B_LINKS = ['Business Consulting','Startup & MSME Support','IT Consulting','Website & Software Development','App Development','Digital Marketing','Import & Export','Business Support'];
+const B2C_LINKS = ['Skill Development','Professional Training','Career Guidance','Education & Training','Technology Support','Business / Entrepreneurship Guidance'];
 
-const B2C_LINKS = [
-  'Skill Development', 'Professional Training', 'Career Guidance',
-  'Education & Training', 'Technology Support', 'Business / Entrepreneurship Guidance',
+const TRUST_STATS = [
+  { icon: 'users', value: '500+', label: 'Clients Served' },
+  { icon: 'building', value: '50+', label: 'Businesses Registered' },
+  { icon: 'laptop', value: '100+', label: 'IT Projects' },
+  { icon: 'clock', value: '15+', label: 'Years Combined Experience' },
 ];
 
 const REGIONS = [
@@ -51,7 +46,7 @@ const REGIONS = [
   { name: 'Dubai', tag: 'Trade Network', desc: 'Gulf trade corridor support for businesses expanding into the UAE and beyond.', gradient: 'linear-gradient(135deg, #fbbf24, #d97706)' },
 ];
 
-// --- SVG icons ---
+// --- SVG icon paths ---
 const ICONS = {
   briefcase: '<path d="M3 21h18M3 7l9-4 9 4M5 21V11M19 21V11M9 21v-6h6v6"/>',
   rocket: '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.16 5-1 5-1"/><path d="M12 15v5s3.03-.55 4-2c1.16-1.62 1-5 1-5"/>',
@@ -67,6 +62,9 @@ const ICONS = {
   laptop: '<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="2" y1="21" x2="22" y2="21"/><line x1="8" y1="21" x2="16" y2="21"/>',
   bulb: '<line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A3.64 3.64 0 0 1 8.91 14"/>',
   pin: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
+  users: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+  building: '<path d="M3 21h18M3 7l9-4 9 4M5 21V11M19 21V11M9 21v-6h6v6"/>',
+  clock: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
 };
 
 function svg(name, size = 24) {
@@ -74,12 +72,20 @@ function svg(name, size = 24) {
   return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
 }
 
+// --- Render trust stats ---
+function renderTrust() {
+  document.getElementById('trust-grid').innerHTML = TRUST_STATS.map((s) => `
+    <div class="trust-card glass reveal" data-tilt>
+      <div class="trust-icon">${svg(s.icon)}</div>
+      <div class="trust-value">${s.value}</div>
+      <div class="trust-label">${s.label}</div>
+    </div>
+  `).join('');
+}
+
 // --- Render service cards ---
 function renderServices() {
-  const b2bGrid = document.getElementById('b2b-grid');
-  const b2cGrid = document.getElementById('b2c-grid');
-
-  b2bGrid.innerHTML = B2B_SERVICES.map((s, i) => `
+  document.getElementById('b2b-grid').innerHTML = B2B_SERVICES.map((s, i) => `
     <div class="service-card b2b reveal" data-tilt style="transition-delay:${(i % 4) * 60}ms">
       <div class="service-card-glow" style="background:rgba(52,211,153,0.15)"></div>
       <span class="service-card-icon">${svg(s.icon)}</span>
@@ -88,7 +94,7 @@ function renderServices() {
     </div>
   `).join('');
 
-  b2cGrid.innerHTML = B2C_SERVICES.map((s, i) => `
+  document.getElementById('b2c-grid').innerHTML = B2C_SERVICES.map((s, i) => `
     <div class="service-card b2c reveal" data-tilt style="transition-delay:${(i % 3) * 60}ms">
       <div class="service-card-glow" style="background:rgba(251,191,36,0.15)"></div>
       <span class="service-card-icon">${svg(s.icon)}</span>
@@ -100,10 +106,8 @@ function renderServices() {
 
 // --- Render overview lists ---
 function renderOverview() {
-  document.getElementById('overview-b2b').innerHTML =
-    B2B_LINKS.map(s => `<li>${s}</li>`).join('');
-  document.getElementById('overview-b2c').innerHTML =
-    B2C_LINKS.map(s => `<li>${s}</li>`).join('');
+  document.getElementById('overview-b2b').innerHTML = B2B_LINKS.map((s) => `<li>${s}</li>`).join('');
+  document.getElementById('overview-b2c').innerHTML = B2C_LINKS.map((s) => `<li>${s}</li>`).join('');
 }
 
 // --- Render regions ---
@@ -121,9 +125,8 @@ function renderRegions() {
 
 // --- 3D Tilt effect ---
 function initTilt() {
-  const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!canHover || reducedMotion) return;
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   document.querySelectorAll('[data-tilt]').forEach((el) => {
     const max = el.classList.contains('about-card') ? 14 : 8;
@@ -195,11 +198,7 @@ function initMobileMenu() {
 function initScrollState() {
   const logo = document.getElementById('floating-logo');
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 20) {
-      logo.classList.add('scrolled');
-    } else {
-      logo.classList.remove('scrolled');
-    }
+    logo.classList.toggle('scrolled', window.scrollY > 20);
   }, { passive: true });
 }
 
@@ -207,11 +206,7 @@ function initScrollState() {
 function initScrollTop() {
   const btn = document.getElementById('scroll-top');
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 600) {
-      btn.classList.add('show');
-    } else {
-      btn.classList.remove('show');
-    }
+    btn.classList.toggle('show', window.scrollY > 600);
   }, { passive: true });
   btn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -223,26 +218,26 @@ function initForm() {
   const toggle = document.getElementById('audience-toggle');
   const serviceSelect = document.getElementById('service-select');
   const form = document.getElementById('enquiry-form');
-  const formCard = document.getElementById('form-card');
   const successDiv = document.getElementById('form-success');
   const errorDiv = document.getElementById('form-error');
   const submitBtn = document.getElementById('form-submit');
   const resetBtn = document.getElementById('success-reset');
 
   let audience = 'business';
-
   const businessServices = [...B2B_LINKS, 'Other'];
   const individualServices = [...B2C_LINKS, 'Other'];
+
+  const submitHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send Enquiry <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
 
   function updateServices() {
     const services = audience === 'business' ? businessServices : individualServices;
     serviceSelect.innerHTML = '<option value="">Select a service</option>' +
-      services.map(s => `<option value="${s}">${s}</option>`).join('');
+      services.map((s) => `<option value="${s}">${s}</option>`).join('');
   }
 
   toggle.querySelectorAll('.audience-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
-      toggle.querySelectorAll('.audience-btn').forEach(b => b.classList.remove('active'));
+      toggle.querySelectorAll('.audience-btn').forEach((b) => b.classList.remove('active'));
       btn.classList.add('active');
       audience = btn.dataset.audience;
       updateServices();
@@ -275,8 +270,7 @@ function initForm() {
           'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
         },
         body: JSON.stringify({
-          name,
-          email,
+          name, email,
           phone: phone || null,
           audience,
           service: service || null,
@@ -289,7 +283,6 @@ function initForm() {
         throw new Error(errText || `Request failed (${response.status})`);
       }
 
-      // Success
       form.style.display = 'none';
       successDiv.style.display = 'flex';
       form.reset();
@@ -298,13 +291,13 @@ function initForm() {
         form.style.display = '';
         successDiv.style.display = 'none';
         submitBtn.disabled = false;
-        submitBtn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send Enquiry <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+        submitBtn.innerHTML = submitHTML;
       }, 6000);
     } catch (err) {
       errorDiv.textContent = err.message || 'Something went wrong. Please try again.';
       errorDiv.style.display = 'block';
       submitBtn.disabled = false;
-      submitBtn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send Enquiry <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+      submitBtn.innerHTML = submitHTML;
     }
   });
 
@@ -312,7 +305,7 @@ function initForm() {
     form.style.display = '';
     successDiv.style.display = 'none';
     submitBtn.disabled = false;
-    submitBtn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send Enquiry <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+    submitBtn.innerHTML = submitHTML;
   });
 }
 
@@ -323,6 +316,7 @@ function setYear() {
 
 // --- Init ---
 function init() {
+  renderTrust();
   renderServices();
   renderOverview();
   renderRegions();

@@ -1,22 +1,19 @@
 /**
- * RIZQ ONE — 3D Animated Background (Three.js)
- * Uses Three.js loaded from CDN as an ES module.
+ * RIZQ ONE — 3D Animated Background
+ * Uses Three.js loaded from CDN via importmap (see index.html).
  *
- * Creates:
- * - 2,400 floating particles with custom GLSL shader (emerald/amber blend)
- * - Two rotating wireframe geometric shapes
- * - Mouse/touch parallax camera movement
- * - Fog and distance-based fading
+ * Creates 2,400 floating particles with a custom GLSL shader,
+ * two rotating wireframe geometric shapes, and mouse/touch parallax.
  */
 
 import * as THREE from 'three';
 
 const canvas = document.getElementById('bg-canvas');
-if (!canvas) throw new Error('Canvas not found');
+if (!canvas) throw new Error('Canvas #bg-canvas not found');
 const isMobile = window.innerWidth < 640;
 const pixelRatio = Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2);
 
-// --- Scene setup ---
+// --- Scene ---
 const scene = new THREE.Scene();
 scene.fog = new THREE.FogExp2(0x0a0d12, 0.035);
 
@@ -173,12 +170,11 @@ function animate() {
   const elapsed = clock.getElapsedTime();
   particleMaterial.uniforms.uTime.value = elapsed;
 
-  // Smooth mouse follow
   mouse.tx += (mouse.x - mouse.tx) * 0.04;
   mouse.ty += (mouse.y - mouse.ty) * 0.04;
 
-  camera.position.x = mouse.tx * (isMobile ? 1.5 : 3);
-  camera.position.y = -mouse.ty * (isMobile ? 1.5 : 3);
+  camera.position.x = mouse.tx * 3;
+  camera.position.y = -mouse.ty * 3;
   camera.lookAt(0, 0, 0);
 
   wireframe.rotation.x = elapsed * 0.15;
@@ -187,8 +183,7 @@ function animate() {
   outerWireframe.rotation.y = -elapsed * 0.06;
   outerWireframe.rotation.z = elapsed * 0.04;
 
-  points.rotation.y = elapsed * (isMobile ? 0.035 : 0.02);
-  points.rotation.x = Math.sin(elapsed * 0.12) * 0.08;
+  points.rotation.y = elapsed * 0.02;
 
   renderer.render(scene, camera);
 }
@@ -199,11 +194,9 @@ animate();
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
     running = false;
-  } else {
-    if (!running) {
-      running = true;
-      clock.getDelta(); // Reset delta
-      animate();
-    }
+  } else if (!running) {
+    running = true;
+    clock.getDelta();
+    animate();
   }
 });
