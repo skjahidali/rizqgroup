@@ -10,27 +10,21 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 // --- Data ---
 const B2B_SERVICES = [
-  { icon: 'briefcase', title: 'Business Consulting', desc: 'Strategic guidance to streamline operations, improve margins, and plan sustainable growth.' },
-  { icon: 'rocket', title: 'Startup & MSME Support', desc: 'Registration, compliance, funding readiness and operational setup for new ventures.' },
-  { icon: 'monitor', title: 'IT Consulting', desc: 'Technology stack advisory, digital transformation roadmaps and IT infrastructure planning.' },
-  { icon: 'globe', title: 'Website & Software Development', desc: 'Custom websites, web apps and software built to your exact business requirements.' },
-  { icon: 'shopping', title: 'App Development', desc: 'Mobile applications for iOS and Android with modern, responsive user experiences.' },
-  { icon: 'megaphone', title: 'Digital Marketing', desc: 'SEO, social media, paid campaigns and content strategy that drives measurable results.' },
-  { icon: 'globe', title: 'Import & Export', desc: 'Documentation, trade compliance and market access support for cross-border commerce.' },
-  { icon: 'headset', title: 'Business Support', desc: 'Ongoing operational, administrative and back-office support to keep you running.' },
+  { icon: 'megaphone', title: 'Digital Growth & AI Marketing', desc: 'Website Design & Development, PPC & Google Ads, SEO, AEO, AI Marketing & AI Automation, Digital Marketing Strategy, Social Media Marketing and more.' },
+  { icon: 'briefcase', title: 'Business Consulting & Startup Support', desc: 'Business strategy, start-up setup, compliance guidance, market research, funding support, operations improvement and sustainable growth planning.' },
+  { icon: 'book', title: 'Study Abroad & Global Education', desc: 'University selection, profile evaluation, scholarship research, SOP support, visa guidance and international education planning.' },
+  { icon: 'globe', title: 'Import & Export', desc: 'Business setup, buyer and supplier research, documentation support, trade compliance and cross-border market entry.' },
 ];
 
 const B2C_SERVICES = [
-  { icon: 'cap', title: 'Skill Development', desc: 'Hands-on training to build job-ready skills in technology, business and trade.' },
-  { icon: 'trophy', title: 'Professional Training', desc: 'Industry-aligned programs that sharpen expertise and accelerate careers.' },
-  { icon: 'compass', title: 'Career Guidance', desc: 'Personalized direction to help you choose the right path and grow with purpose.' },
-  { icon: 'book', title: 'Education & Training', desc: 'Structured learning across business, technology and entrepreneurship topics.' },
-  { icon: 'laptop', title: 'Technology Support', desc: 'Practical help with tools, platforms and digital skills for everyday work.' },
-  { icon: 'bulb', title: 'Business / Entrepreneurship Guidance', desc: 'Turn your idea into a real venture with step-by-step startup mentoring.' },
+  { icon: 'cap', title: 'Career & Education Support', desc: 'Guidance for students, professionals and entrepreneurs seeking growth opportunities across business and technology fields.' },
+  { icon: 'trophy', title: 'Business Mentoring', desc: 'Practical support for entrepreneurs and business owners navigating strategy, operations and expansion.' },
+  { icon: 'compass', title: 'Global Opportunity Planning', desc: 'Explore international education, trade and growth opportunities with a clear, informed roadmap.' },
+  { icon: 'laptop', title: 'Digital Skills & Growth', desc: 'Build stronger digital capability with support across marketing, technology and business development.' },
 ];
 
-const B2B_LINKS = ['Business Consulting','Startup & MSME Support','IT Consulting','Website & Software Development','App Development','Digital Marketing','Import & Export','Business Support'];
-const B2C_LINKS = ['Skill Development','Professional Training','Career Guidance','Education & Training','Technology Support','Business / Entrepreneurship Guidance'];
+const B2B_LINKS = ['Digital Growth & AI Marketing','Business Consulting & Startup Support','Study Abroad & Global Education','Import & Export'];
+const B2C_LINKS = ['Career & Education Support','Business Mentoring','Global Opportunity Planning','Digital Skills & Growth'];
 
 const TRUST_STATS = [
   { icon: 'users', value: '500+', label: 'Clients Served' },
