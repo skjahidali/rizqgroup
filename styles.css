@@ -11,6 +11,7 @@
   --emerald-300: #6ee7b7; --emerald-400: #34d399; --emerald-500: #10b981;
   --teal-400: #2dd4bf; --teal-500: #14b8a6; --teal-600: #0d9488;
   --amber-300: #fcd34d; --amber-400: #fbbf24; --amber-500: #f59e0b;
+  --shadow-3d: 0 2px 4px rgba(0,0,0,0.2), 0 8px 16px rgba(0,0,0,0.25), 0 24px 48px rgba(0,0,0,0.2);
 }
 
 html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
@@ -73,8 +74,8 @@ svg { display: block; }
 .menu-btn:hover { transform: scale(1.05); }
 
 /* --- Mobile Menu --- */
-.mobile-menu { position: fixed; inset: 0; z-index: 60; display: flex; flex-direction: column; background: rgba(10,13,18,0.95); backdrop-filter: blur(32px); opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
-.mobile-menu.open { opacity: 1; pointer-events: auto; }
+.mobile-menu { position: fixed; inset: 0; z-index: 60; display: flex; flex-direction: column; background: rgba(10,13,18,0.95); backdrop-filter: blur(32px); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.5s ease, visibility 0s linear 0.5s; }
+.mobile-menu.open { opacity: 1; visibility: visible; pointer-events: auto; transition-delay: 0s; }
 .mobile-menu-header { display: flex; align-items: center; gap: 10px; padding: 20px; }
 .mobile-menu-header .logo-text { display: flex; }
 .menu-close { margin-left: auto; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #fff; }

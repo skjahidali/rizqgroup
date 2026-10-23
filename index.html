@@ -2,19 +2,100 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0a0d12" />
-  <title>RIZQ ONE — Business • Technology • Global Trade</title>
-  <meta name="description" content="RIZQ ONE brings together digital growth, business consulting, global education and international trade to help individuals, entrepreneurs and businesses build, grow and expand." />
-  <meta name="google-site-verification" content="TOZ-aNJBOKHxvq5rEJTIzBj2PZhofE2sTRli0Z0K594" />
+  <!-- Primary SEO -->
+  <title>AI Visibility, SEO, AEO & GEO Agency in India | RIZQ ONE</title>
 
+  <meta
+    name="description"
+    content="RIZQ ONE, a brand of RIZQ GROUP operating from Kolkata, India, helps businesses grow through AI visibility, SEO, AEO, GEO, branding, digital promotion, lead generation and AI-powered digital marketing."
+  />
+
+  <meta name="author" content="RIZQ ONE — A Brand of RIZQ GROUP" />
+  <meta name="application-name" content="RIZQ ONE" />
+  <meta
+    name="robots"
+    content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+  />
+
+  <!-- Canonical & Favicon -->
+  <link rel="canonical" href="https://www.rizqone.com/" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Google Search Console Verification -->
+  <meta
+    name="google-site-verification"
+    content="TOZ-aNJBOKHxvq5rEJTIzBj2PZhofE2sTRli0Z0K594"
+  />
+
+  <!-- Open Graph: Facebook, LinkedIn & Social Sharing -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="RIZQ ONE" />
+  <meta
+    property="og:title"
+    content="RIZQ ONE | AI Visibility, Digital Growth & Lead Generation"
+  />
+  <meta
+    property="og:description"
+    content="A brand of RIZQ GROUP, operating from Kolkata, India. We help businesses strengthen AI visibility, search rankings, branding, digital promotion and lead generation through SEO, AEO, GEO and AI-powered solutions."
+  />
+  <meta property="og:url" content="https://www.rizqone.com/" />
+  <meta property="og:locale" content="en_IN" />
+
+  <!-- X / Twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta
+    name="twitter:title"
+    content="RIZQ ONE | AI Visibility & Digital Growth Agency"
+  />
+  <meta
+    name="twitter:description"
+    content="AI visibility, SEO, AEO, GEO, branding, digital promotion, lead generation and business growth solutions from Kolkata, India."
+  />
+  <!-- Organization Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://www.rizqone.com/#organization",
+    "name": "RIZQ ONE",
+    "alternateName": "RIZQ ONE — A Brand of RIZQ GROUP",
+    "url": "https://www.rizqone.com/",
+    "description": "RIZQ ONE is a brand of RIZQ GROUP operating from Kolkata, India, providing AI visibility, SEO, AEO, GEO, branding, digital promotion, lead generation, AI automation and digital growth solutions.",
+    "logo": "https://www.rizqone.com/favicon.svg",
+    "areaServed": [
+      {
+        "@type": "Country",
+        "name": "India"
+      },
+      {
+        "@type": "Place",
+        "name": "Worldwide"
+      }
+    ],
+    "knowsAbout": [
+      "AI Visibility Optimization",
+      "Answer Engine Optimization",
+      "Generative Engine Optimization",
+      "Search Engine Optimization",
+      "Digital Marketing",
+      "Brand Strategy and Branding",
+      "Online Brand Promotion",
+      "Lead Generation",
+      "AI Automation",
+      "Website Development",
+      "Social Media Marketing",
+      "Business Growth Consulting"
+    ]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
 
   <canvas id="bg-canvas" aria-hidden="true"></canvas>
@@ -388,21 +469,21 @@
         <div class="form-card glass-strong reveal" id="form-card">
           <form id="enquiry-form">
             <div class="form-row">
-              <div class="form-group"><label>Full Name <span class="required">*</span></label><input type="text" name="name" required placeholder="Your name" /></div>
-              <div class="form-group"><label>Email <span class="required">*</span></label><input type="email" name="email" required placeholder="you@example.com" /></div>
+              <div class="form-group"><label for="name">Full Name <span class="required">*</span></label><input id="name" type="text" name="name" required placeholder="Your name" /></div>
+              <div class="form-group"><label for="email">Email <span class="required">*</span></label><input id="email" type="email" name="email" required placeholder="you@example.com" /></div>
             </div>
             <div class="form-row">
-              <div class="form-group"><label>Phone</label><input type="tel" name="phone" placeholder="+91 ..." /></div>
-              <div class="form-group"><label>Service of Interest</label><select name="service" id="service-select"><option value="">Select a service</option></select></div>
+              <div class="form-group"><label for="phone">Phone</label><input id="phone" type="tel" name="phone" placeholder="+91 ..." /></div>
+              <div class="form-group"><label for="service-select">Service of Interest</label><select name="service" id="service-select"><option value="">Select a service</option></select></div>
             </div>
-            <div class="form-group"><label>Message <span class="required">*</span></label><textarea name="message" required rows="4" placeholder="Tell us what you need..."></textarea></div>
-            <div id="form-error" class="form-error" style="display:none"></div>
+            <div class="form-group"><label for="message">Message <span class="required">*</span></label><textarea id="message" name="message" required rows="4" placeholder="Tell us what you need..."></textarea></div>
+            <div id="form-error" class="form-error" role="alert" style="display:none"></div>
             <button type="submit" class="btn-primary form-submit" id="form-submit">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send Enquiry
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </button>
           </form>
-          <div class="form-success" id="form-success" style="display:none">
+          <div class="form-success" id="form-success" role="status" aria-live="polite" style="display:none">
             <div class="success-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
             <h3>Thank you!</h3>
             <p>Your enquiry has been received. Our team will get back to you shortly.</p>

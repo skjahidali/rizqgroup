@@ -10,8 +10,8 @@ import * as THREE from 'three';
 
 const canvas = document.getElementById('bg-canvas');
 if (!canvas) throw new Error('Canvas #bg-canvas not found');
-const isMobile = window.innerWidth < 640;
-const pixelRatio = Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2);
+let isMobile = window.innerWidth < 640;
+let pixelRatio = Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2);
 
 // --- Scene ---
 const scene = new THREE.Scene();
@@ -99,7 +99,7 @@ const particleMaterial = new THREE.ShaderMaterial({
       gl_PointSize = aSize * uPixelRatio * (30.0 / -mvPosition.z);
 
       float dist = length(mvPosition.xyz);
-      vAlpha = smoothstep(45.0, 12.0, dist);
+      vAlpha = 1.0 - smoothstep(12.0, 45.0, dist);
     }
   `,
   fragmentShader: `
@@ -153,10 +153,13 @@ window.addEventListener('touchmove', (e) => {
 
 // --- Resize ---
 window.addEventListener('resize', () => {
+  isMobile = window.innerWidth < 640;
+  pixelRatio = Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2);
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
+  renderer.setPixelRatio(pixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
+  particleMaterial.uniforms.uPixelRatio.value = pixelRatio;
 }, { passive: true });
 
 // --- Animation loop ---
