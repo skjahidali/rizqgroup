@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0a0d12" />
   <!-- Primary SEO -->
-  <title>SEO, AEO &amp; GEO Agency in Kolkata, India | RizqOne - A Brand of RIZQ GROUP</title>
+  <title>AI Visibility - SEO, AEO &amp; GEO Agency in Kolkata, India | RizqOne - A Brand of RIZQ GROUP</title>
 
   <meta
     name="description"
@@ -54,7 +54,7 @@
     content="RizqOne - A Brand of RIZQ GROUP helps businesses grow with SEO, AI search visibility, AEO, GEO, digital marketing, website development and business consulting in Kolkata, India."
   />
   <!-- Organization Structured Data -->
-  <script type="application/ld+json">
+  <script type="application/ld+json" id="organization-schema">
   {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -95,6 +95,28 @@
       "Business Growth Consulting"
     ]
   }
+  </script>
+  <script>
+    fetch(new URL("knows-about.json", document.baseURI))
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to load knows-about.json (${response.status})`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (!Array.isArray(data.knowsAbout) || !data.knowsAbout.every((topic) => typeof topic === "string")) {
+          throw new TypeError("knows-about.json must contain a string array named knowsAbout");
+        }
+
+        const schema = document.getElementById("organization-schema");
+        const organization = JSON.parse(schema.textContent);
+        organization.knowsAbout = data.knowsAbout;
+        schema.textContent = JSON.stringify(organization);
+      })
+      .catch((error) => {
+        console.error("Could not add knows-about.json to Organization structured data:", error);
+      });
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
