@@ -14,6 +14,7 @@ const B2B_SERVICES = [
   { icon: 'answer', title: 'Answer Engine Optimisation', desc: 'Make your expertise easy to understand and useful in featured snippets, voice search and direct-answer experiences.' },
   { icon: 'spark', title: 'Generative Engine Optimisation', desc: 'Strengthen the content and credibility signals that help your brand show up in generative search experiences.' },
   { icon: 'bulb', title: 'AI Marketing', desc: 'Use AI thoughtfully to support research, content workflows and smarter marketing—without losing the human touch.' },
+  { icon: 'megaphone', title: 'Paid Advertising & Performance Marketing', desc: 'Plan and improve Google and Meta ad campaigns around your audience, budget and meaningful business goals.' },
 ];
 
 const B2C_SERVICES = [
@@ -239,6 +240,10 @@ function initForm() {
   });
 
   updateServices();
+  const requestedService = new URLSearchParams(window.location.search).get('service');
+  if (businessServices.includes(requestedService)) {
+    serviceSelect.value = requestedService;
+  }
 
   document.querySelectorAll('[data-service]').forEach((link) => {
     link.addEventListener('click', () => {
