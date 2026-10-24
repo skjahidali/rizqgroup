@@ -10,27 +10,26 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 // --- Data ---
 const B2B_SERVICES = [
-  { icon: 'megaphone', title: 'Digital Growth & AI Marketing', desc: 'Website Design & Development, PPC & Google Ads, SEO, AEO, AI Marketing & AI Automation, Digital Marketing Strategy, Social Media Marketing and more.' },
-  { icon: 'briefcase', title: 'Business Consulting & Startup Support', desc: 'Business strategy, start-up setup, compliance guidance, market research, funding support, operations improvement and sustainable growth planning.' },
-  { icon: 'book', title: 'Study Abroad & Global Education', desc: 'University selection, profile evaluation, scholarship research, SOP support, visa guidance and international education planning.' },
-  { icon: 'globe', title: 'Import & Export', desc: 'Business setup, buyer and supplier research, documentation support, trade compliance and cross-border market entry.' },
+  { icon: 'search', title: 'Search Engine Optimisation', desc: 'Build a stronger search foundation with technical improvements, useful content and a clear organic growth strategy.' },
+  { icon: 'answer', title: 'Answer Engine Optimisation', desc: 'Make your expertise easy to understand and useful in featured snippets, voice search and direct-answer experiences.' },
+  { icon: 'spark', title: 'Generative Engine Optimisation', desc: 'Strengthen the content and credibility signals that help your brand show up in generative search experiences.' },
+  { icon: 'bulb', title: 'AI Marketing', desc: 'Use AI thoughtfully to support research, content workflows and smarter marketing—without losing the human touch.' },
 ];
 
 const B2C_SERVICES = [
-  { icon: 'cap', title: 'Career & Education Support', desc: 'Guidance for students, professionals and entrepreneurs seeking growth opportunities across business and technology fields.' },
-  { icon: 'trophy', title: 'Business Mentoring', desc: 'Practical support for entrepreneurs and business owners navigating strategy, operations and expansion.' },
-  { icon: 'compass', title: 'Global Opportunity Planning', desc: 'Explore international education, trade and growth opportunities with a clear, informed roadmap.' },
-  { icon: 'laptop', title: 'Digital Skills & Growth', desc: 'Build stronger digital capability with support across marketing, technology and business development.' },
+  { icon: 'briefcase', title: 'Business Consulting & Startup Support', desc: 'Practical guidance for startups and MSMEs, from planning and research to operations and market expansion.' },
+  { icon: 'book', title: 'Study Abroad & Global Education', desc: 'Support with study options, applications and planning for people considering an international education.' },
+  { icon: 'globe', title: 'Import & Export', desc: 'Guidance for businesses exploring import, export and cross-border market opportunities.' },
 ];
 
-const B2B_LINKS = ['Digital Growth & AI Marketing','Business Consulting & Startup Support','Study Abroad & Global Education','Import & Export'];
-const B2C_LINKS = ['Career & Education Support','Business Mentoring','Global Opportunity Planning','Digital Skills & Growth'];
+const B2B_LINKS = B2B_SERVICES.map((service) => service.title);
+const B2C_LINKS = B2C_SERVICES.map((service) => service.title);
 
 const TRUST_STATS = [
-  { icon: 'users', value: '500+', label: 'Clients Served' },
-  { icon: 'building', value: '50+', label: 'Businesses Registered' },
-  { icon: 'laptop', value: '100+', label: 'IT Projects' },
-  { icon: 'clock', value: '15+', label: 'Years Combined Experience' },
+  { icon: 'search', value: 'SEO', label: 'Be found in search' },
+  { icon: 'answer', value: 'AEO', label: 'Be the useful answer' },
+  { icon: 'spark', value: 'GEO', label: 'Show up in AI discovery' },
+  { icon: 'bulb', value: 'AI', label: 'Make marketing smarter' },
 ];
 
 const REGIONS = [
@@ -42,6 +41,9 @@ const REGIONS = [
 
 // --- SVG icon paths ---
 const ICONS = {
+  search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',
+  answer: '<path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/><path d="m9 12 2 2 4-4"/>',
+  spark: '<path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3z"/><path d="m19 14 1.1 3L23 18l-2.9 1-1.1 3-1-3-3-1 3-.9 1-3.1z"/>',
   briefcase: '<path d="M3 21h18M3 7l9-4 9 4M5 21V11M19 21V11M9 21v-6h6v6"/>',
   rocket: '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.16 5-1 5-1"/><path d="M12 15v5s3.03-.55 4-2c1.16-1.62 1-5 1-5"/>',
   monitor: '<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>',
@@ -63,7 +65,7 @@ const ICONS = {
 
 function svg(name, size = 24) {
   const path = ICONS[name] || '';
-  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${path}</svg>`;
 }
 
 // --- Render trust stats ---
@@ -80,22 +82,15 @@ function renderTrust() {
 // --- Render service cards ---
 function renderServices() {
   document.getElementById('b2b-grid').innerHTML = B2B_SERVICES.map((s, i) => `
-    <div class="service-card b2b reveal" data-tilt style="transition-delay:${(i % 4) * 60}ms">
-      <div class="service-card-glow" style="background:rgba(52,211,153,0.15)"></div>
-      <span class="service-card-icon">${svg(s.icon)}</span>
+    <a class="service-card reveal" href="#contact" data-service="${s.title}" style="transition-delay:${i * 70}ms">
+      <span class="service-topline"><span>0${i + 1} / VISIBILITY</span><span class="service-arrow" aria-hidden="true">↗</span></span>
+      <span class="service-card-icon">${svg(s.icon, 25)}</span>
       <h3>${s.title}</h3>
       <p>${s.desc}</p>
-    </div>
+      <span class="service-cta">Let’s talk about it <span aria-hidden="true">↗</span></span>
+    </a>
   `).join('');
 
-  document.getElementById('b2c-grid').innerHTML = B2C_SERVICES.map((s, i) => `
-    <div class="service-card b2c reveal" data-tilt style="transition-delay:${(i % 3) * 60}ms">
-      <div class="service-card-glow" style="background:rgba(251,191,36,0.15)"></div>
-      <span class="service-card-icon">${svg(s.icon)}</span>
-      <h3>${s.title}</h3>
-      <p>${s.desc}</p>
-    </div>
-  `).join('');
 }
 
 // --- Render overview lists ---
@@ -168,12 +163,14 @@ function initMobileMenu() {
   menuBtn.addEventListener('click', () => {
     menu.classList.add('open');
     menuBtn.setAttribute('aria-expanded', 'true');
+    menuBtn.setAttribute('aria-label', 'Close menu');
     document.body.style.overflow = 'hidden';
   });
 
   const closeMenu = () => {
     menu.classList.remove('open');
     menuBtn.setAttribute('aria-expanded', 'false');
+    menuBtn.setAttribute('aria-label', 'Open menu');
     document.body.style.overflow = '';
   };
 
@@ -218,7 +215,7 @@ function initForm() {
   const resetBtn = document.getElementById('success-reset');
 
   let audience = 'business';
-  const businessServices = [...B2B_LINKS, 'Other'];
+  const businessServices = [...B2B_LINKS, ...B2C_LINKS, 'Other'];
   const individualServices = [...B2C_LINKS, 'Other'];
 
   const submitHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send Enquiry <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
@@ -231,14 +228,33 @@ function initForm() {
 
   toggle.querySelectorAll('.audience-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
-      toggle.querySelectorAll('.audience-btn').forEach((b) => b.classList.remove('active'));
-      btn.classList.add('active');
+      toggle.querySelectorAll('.audience-btn').forEach((button) => {
+        const isActive = button === btn;
+        button.classList.toggle('active', isActive);
+        button.setAttribute('aria-pressed', String(isActive));
+      });
       audience = btn.dataset.audience;
       updateServices();
     });
   });
 
   updateServices();
+
+  document.querySelectorAll('[data-service]').forEach((link) => {
+    link.addEventListener('click', () => {
+      const service = link.dataset.service;
+      if (individualServices.includes(service) && !businessServices.includes(service)) {
+        audience = 'individual';
+        toggle.querySelectorAll('.audience-btn').forEach((button) => {
+          const isActive = button.dataset.audience === audience;
+          button.classList.toggle('active', isActive);
+          button.setAttribute('aria-pressed', String(isActive));
+        });
+        updateServices();
+      }
+      serviceSelect.value = service;
+    });
+  });
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -310,15 +326,9 @@ function setYear() {
 
 // --- Init ---
 function init() {
-  renderTrust();
   renderServices();
-  renderOverview();
-  renderRegions();
-  initTilt();
   initReveal();
-  initMobileMenu();
   initScrollState();
-  initScrollTop();
   initForm();
   setYear();
 }
