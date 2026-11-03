@@ -1,0 +1,2 @@
+[functions.send-enquiry-email]
+verify_jwt = true

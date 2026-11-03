@@ -1,12 +1,14 @@
 /**
  * RIZQ ONE — Standalone App Logic
  * Handles: scroll reveal, 3D tilt cards, mobile menu, service rendering,
- * audience toggle, form submission to Supabase, scroll-to-top.
+ * audience toggle, enquiry storage and email notification, scroll-to-top.
  */
 
 // --- Supabase config (anon key is safe for client-side use) ---
 const SUPABASE_URL = 'https://vpicgenwfsaxsxnvojjj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwaWNnZW53ZnNheHN4bnZvampqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc4NjgxMTMsImV4cCI6MjEwMzQ0NDExM30.UNUuNvVc5CWLMu0bCTVNn1X3nWl6PvUqLufimjajJgg';
+
+const ENQUIRY_EMAIL_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/send-enquiry-email`;
 
 // --- Data ---
 const B2B_SERVICES = [
@@ -15,6 +17,7 @@ const B2B_SERVICES = [
   { icon: 'spark', title: 'Generative Engine Optimisation', desc: 'Strengthen the content and credibility signals that help your brand show up in generative search experiences.' },
   { icon: 'bulb', title: 'AI Marketing', desc: 'Use AI thoughtfully to support research, content workflows and smarter marketing—without losing the human touch.' },
   { icon: 'megaphone', title: 'Paid Advertising & Performance Marketing', desc: 'Plan and improve Google and Meta ad campaigns around your audience, budget and meaningful business goals.' },
+  { icon: 'users', title: 'Verified Lead Generation', desc: 'Run Google and Meta lead campaigns with agreed checks for contact details and fit before submissions are counted as verified.' },
 ];
 
 const B2C_SERVICES = [
@@ -271,11 +274,21 @@ function initForm() {
     const phone = formData.get('phone').trim();
     const service = formData.get('service');
     const message = formData.get('message').trim();
+    const website = formData.get('website').trim();
 
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<div class="spinner"></div> Sending...';
     errorDiv.style.display = 'none';
 
+    if (website) {
+      errorDiv.textContent = 'We could not verify your submission. Please try again or email info@rizqone.com.';
+      errorDiv.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = submitHTML;
+      return;
+    }
+
+    let enquirySaved = false;
     try {
       const response = await fetch(`${SUPABASE_URL}/rest/v1/enquiries`, {
         method: 'POST',
@@ -298,7 +311,30 @@ function initForm() {
         throw new Error(errText || `Request failed (${response.status})`);
       }
 
+      enquirySaved = true;
+      const emailResponse = await fetch(ENQUIRY_EMAIL_FUNCTION_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify({
+          name, email,
+          phone: phone || null,
+          audience,
+          service: service || null,
+          message,
+          website,
+        }),
+      });
+
+      if (!emailResponse.ok) {
+        throw new Error(`Email notification failed (${emailResponse.status}).`);
+      }
+
       form.style.display = 'none';
+      resetBtn.hidden = false;
       successDiv.style.display = 'flex';
       form.reset();
 
@@ -309,6 +345,16 @@ function initForm() {
         submitBtn.innerHTML = submitHTML;
       }, 6000);
     } catch (err) {
+      if (enquirySaved) {
+        console.error('The enquiry was saved, but its email notification failed:', err);
+        form.style.display = 'none';
+        successDiv.querySelector('h3').textContent = 'Your enquiry was saved.';
+        successDiv.querySelector('p').textContent = 'We could not send the email notification. Please contact info@rizqone.com and mention that you submitted the form.';
+        resetBtn.hidden = true;
+        successDiv.style.display = 'flex';
+        return;
+      }
+
       errorDiv.textContent = err.message || 'Something went wrong. Please try again.';
       errorDiv.style.display = 'block';
       submitBtn.disabled = false;
