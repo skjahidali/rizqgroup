@@ -1,0 +1,19 @@
+{
+  "servers": {
+    "google-analytics": {
+      "type": "stdio",
+      "command": "${workspaceFolder}\\.venv\\Scripts\\google-analytics-mcp.exe",
+      "env": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "${env:APPDATA}\\gcloud\\application_default_credentials.json",
+        "GOOGLE_CLOUD_PROJECT": "${input:googleCloudProjectId}"
+      }
+    }
+  },
+  "inputs": [
+    {
+      "id": "googleCloudProjectId",
+      "type": "promptString",
+      "description": "Google Cloud project ID with the Analytics APIs enabled"
+    }
+  ]
+}

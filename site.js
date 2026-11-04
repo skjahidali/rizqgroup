@@ -7,16 +7,21 @@
   const menuClose = document.getElementById("menu-close");
   const progress = document.getElementById("reading-progress");
 
+  if (menu && menu.parentElement !== document.body) {
+    document.body.append(menu);
+  }
+
   document.querySelectorAll("[data-year]").forEach((element) => {
     element.textContent = String(new Date().getFullYear());
   });
 
   if (menu && menuButton) {
-    const closeMenu = () => {
+    const closeMenu = (restoreFocus = false) => {
       menu.classList.remove("open");
       menuButton.setAttribute("aria-expanded", "false");
       menuButton.setAttribute("aria-label", "Open menu");
       document.body.classList.remove("menu-open");
+      if (restoreFocus) menuButton.focus();
     };
 
     menuButton.addEventListener("click", () => {
@@ -28,16 +33,15 @@
       if (open) menu.querySelector("a")?.focus();
     });
 
-    menuClose?.addEventListener("click", closeMenu);
-    menu.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMenu));
+    menuClose?.addEventListener("click", () => closeMenu(true));
+    menu.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => closeMenu()));
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && menu.classList.contains("open")) {
-        closeMenu();
-        menuButton.focus();
+        closeMenu(true);
       }
     });
     window.addEventListener("resize", () => {
-      if (window.innerWidth > 700) closeMenu();
+      if (window.innerWidth > 800) closeMenu();
     }, { passive: true });
   }
 

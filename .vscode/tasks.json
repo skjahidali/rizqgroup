@@ -1,0 +1,96 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "SEO tools: install API clients",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "-m",
+        "pip",
+        "install",
+        "-r",
+        "${workspaceFolder}\\requirements-seo-tools.txt"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Google Search Console: export last 28 days",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "${workspaceFolder}\\tools\\search_console.py",
+        "--site-url",
+        "https://www.rizqone.com/"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Google Analytics: authenticate read-only",
+      "type": "process",
+      "command": "${env:LOCALAPPDATA}\\Google\\Cloud SDK\\google-cloud-sdk\\bin\\gcloud.cmd",
+      "args": [
+        "auth",
+        "application-default",
+        "login",
+        "--scopes=https://www.googleapis.com/auth/analytics.readonly,https://www.googleapis.com/auth/cloud-platform",
+        "--client-id-file=${workspaceFolder}\\.google-seo\\client_secret.json"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Google Ads: authorize Keyword Planner",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "${workspaceFolder}\\tools\\google_ads_login.py",
+        "--customer-id",
+        "${input:googleAdsCustomerId}"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Google Ads: get Kolkata keyword ideas",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "${workspaceFolder}\\tools\\keyword_planner.py"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Google Analytics MCP: create isolated environment",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "-m",
+        "venv",
+        "${workspaceFolder}\\.venv"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Google Analytics MCP: install",
+      "type": "process",
+      "command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+      "args": [
+        "-m",
+        "pip",
+        "install",
+        "-r",
+        "${workspaceFolder}\\requirements-ga4-mcp.txt"
+      ],
+      "dependsOn": [
+        "Google Analytics MCP: create isolated environment"
+      ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "googleAdsCustomerId",
+      "type": "promptString",
+      "description": "Google Ads customer ID (10 digits, no hyphens)"
+    }
+  ]
+}

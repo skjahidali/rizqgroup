@@ -1,0 +1,7 @@
+.google-seo/
+.google-ads.yaml
+.google-ads-customer-id
+seo-research/
+.venv/
+__pycache__/
+*.py[cod]
