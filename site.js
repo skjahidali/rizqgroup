@@ -15,6 +15,23 @@
     element.textContent = String(new Date().getFullYear());
   });
 
+  document.querySelectorAll(".ai-visibility-section").forEach((section) => {
+    const marquee = section.querySelector(".ai-visibility-marquee");
+    const toggle = section.querySelector(".ai-visibility-toggle");
+    const label = toggle?.querySelector(".ai-visibility-toggle-label");
+    const icon = toggle?.querySelector(".ai-visibility-toggle-icon");
+
+    if (!marquee || !toggle || !label || !icon) return;
+
+    toggle.addEventListener("click", () => {
+      const paused = toggle.getAttribute("aria-pressed") !== "true";
+      toggle.setAttribute("aria-pressed", String(paused));
+      label.textContent = paused ? "Resume animation" : "Pause animation";
+      icon.textContent = paused ? "▶" : "Ⅱ";
+      marquee.classList.toggle("is-paused", paused);
+    });
+  });
+
   if (menu && menuButton) {
     const closeMenu = (restoreFocus = false) => {
       menu.classList.remove("open");

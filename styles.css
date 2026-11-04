@@ -528,8 +528,37 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
   .insights-hero-inner { grid-template-columns: 1fr; }.insight-orbit { display: none; }.insight-card { grid-template-columns: 1fr; }.article-art { min-height: 160px; }.article-byline .byline-divider:nth-of-type(2) { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .art-orbit, .orbit-ring, .insight-orbit::before, .insight-orbit::after, .featured-art-orbit { animation: none !important; }
+  .art-orbit, .orbit-ring, .insight-orbit::before, .insight-orbit::after, .featured-art-orbit, .ai-visibility-grid { animation: none !important; }
+  .ai-visibility-controls {
+    display: none;
+  }
+  .ai-visibility-marquee {
+    overflow: visible;
+    padding: 0;
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+  .ai-visibility-grid {
+    display: grid;
+    width: auto;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .ai-visibility-card {
+    width: auto;
+    margin: 0;
+  }
+  .ai-visibility-card[aria-hidden="true"] {
+    display: none;
+  }
   .motion-ready .motion-reveal { opacity: 1; transform: none; }
+}
+
+@media (max-width: 700px) and (prefers-reduced-motion: reduce) {
+  .ai-visibility-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
 }
 
 /* ==========================================
@@ -813,13 +842,65 @@ h1, h2, h3 {
   line-height: 1.7;
 }
 
+.ai-visibility-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin: -14px 0 6px;
+}
+
+.ai-visibility-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 10px;
+  border: 1px solid rgba(32, 43, 38, .12);
+  border-radius: 999px;
+  background: #fff;
+  color: #536258;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.ai-visibility-toggle:hover {
+  border-color: rgba(20, 107, 76, .35);
+  color: var(--green);
+}
+
+.ai-visibility-toggle:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}
+
+.ai-visibility-marquee {
+  overflow: hidden;
+  padding: 8px 0 14px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+}
+
 .ai-visibility-grid {
-  display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
-  gap: 12px;
+  display: flex;
+  width: max-content;
+  animation: ai-visibility-slide 36s linear infinite;
+  will-change: transform;
+}
+
+.ai-visibility-marquee:hover .ai-visibility-grid,
+.ai-visibility-marquee:focus-within .ai-visibility-grid,
+.ai-visibility-marquee.is-paused .ai-visibility-grid {
+  animation-play-state: paused;
+}
+
+@keyframes ai-visibility-slide {
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .ai-visibility-card {
+  flex: 0 0 138px;
+  width: 138px;
   min-height: 110px;
   display: flex;
   flex-direction: column;
@@ -827,6 +908,7 @@ h1, h2, h3 {
   justify-content: center;
   gap: 11px;
   padding: 14px 8px;
+  margin-right: 12px;
   border: 1px solid rgba(32, 43, 38, .08);
   border-radius: 10px;
   background: #fcfdfb;
@@ -1008,11 +1090,12 @@ h1, h2, h3 {
   }
 
   .ai-visibility-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+    animation-duration: 30s;
   }
 
   .ai-visibility-card {
+    flex-basis: 124px;
+    width: 124px;
     min-height: 96px;
     gap: 9px;
     font-size: 12px;
@@ -1729,5 +1812,43 @@ summary:focus-visible {
   .home-page .about-location {
     min-height: 210px;
     padding: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-visibility-controls {
+    display: none;
+  }
+
+  .ai-visibility-marquee {
+    overflow: visible;
+    padding: 0;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .ai-visibility-grid {
+    display: grid;
+    width: auto;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    animation: none;
+    transform: none;
+  }
+
+  .ai-visibility-card {
+    width: auto;
+    margin: 0;
+  }
+
+  .ai-visibility-card[aria-hidden="true"] {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) and (prefers-reduced-motion: reduce) {
+  .ai-visibility-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
   }
 }
