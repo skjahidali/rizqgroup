@@ -12,12 +12,12 @@ const ENQUIRY_EMAIL_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/send-enquiry-em
 
 // --- Data ---
 const B2B_SERVICES = [
-  { icon: 'search', title: 'Search Engine Optimisation', desc: 'Build a stronger search foundation with technical improvements, useful content and a clear organic growth strategy.' },
-  { icon: 'answer', title: 'Answer Engine Optimisation', desc: 'Make your expertise easy to understand and useful in featured snippets, voice search and direct-answer experiences.' },
-  { icon: 'spark', title: 'Generative Engine Optimisation', desc: 'Strengthen the content and credibility signals that help your brand show up in generative search experiences.' },
-  { icon: 'bulb', title: 'AI Marketing', desc: 'Use AI thoughtfully to support research, content workflows and smarter marketing—without losing the human touch.' },
-  { icon: 'megaphone', title: 'Paid Advertising & Performance Marketing', desc: 'Plan and improve Google and Meta ad campaigns around your audience, budget and meaningful business goals.' },
-  { icon: 'users', title: 'Verified Lead Generation', desc: 'Run Google and Meta lead campaigns with agreed checks for contact details and fit before submissions are counted as verified.' },
+  { icon: 'search', title: 'Search Engine Optimisation', page: 'seo-services-kolkata.html', desc: 'Build a stronger search foundation with technical improvements, useful content and a clear organic growth strategy.' },
+  { icon: 'answer', title: 'Answer Engine Optimisation', page: 'aeo-services.html', desc: 'Make your expertise easy to understand and useful in featured snippets, voice search and direct-answer experiences.' },
+  { icon: 'spark', title: 'Generative Engine Optimisation', page: 'geo-services.html', desc: 'Strengthen the content and credibility signals that help your brand show up in generative search experiences.' },
+  { icon: 'bulb', title: 'AI Marketing', page: 'ai-marketing.html', desc: 'Use AI thoughtfully to support research, content workflows and smarter marketing—without losing the human touch.' },
+  { icon: 'megaphone', title: 'Paid Advertising & Performance Marketing', page: 'paid-advertising.html', desc: 'Plan and improve Google and Meta ad campaigns around your audience, budget and meaningful business goals.' },
+  { icon: 'users', title: 'Verified Lead Generation', page: 'lead-generation.html', desc: 'Run Google and Meta lead campaigns with agreed checks for contact details and fit before submissions are counted as verified.' },
 ];
 
 const B2C_SERVICES = [
@@ -86,12 +86,12 @@ function renderTrust() {
 // --- Render service cards ---
 function renderServices() {
   document.getElementById('b2b-grid').innerHTML = B2B_SERVICES.map((s, i) => `
-    <a class="service-card reveal" href="#contact" data-service="${s.title}" style="transition-delay:${i * 70}ms">
+    <a class="service-card reveal" href="${s.page}" data-service="${s.title}" style="transition-delay:${i * 70}ms">
       <span class="service-topline"><span>0${i + 1} / VISIBILITY</span><span class="service-arrow" aria-hidden="true">↗</span></span>
       <span class="service-card-icon">${svg(s.icon, 25)}</span>
       <h3>${s.title}</h3>
       <p>${s.desc}</p>
-      <span class="service-cta">Let’s talk about it <span aria-hidden="true">↗</span></span>
+      <span class="service-cta">Explore this service <span aria-hidden="true">↗</span></span>
     </a>
   `).join('');
 

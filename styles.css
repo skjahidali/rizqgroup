@@ -2143,6 +2143,35 @@ summary:focus-visible {
   border-radius: 0;
 }
 
+.service-page-hero { min-height: 450px; }
+.service-page-orbit { width: min(100%, 340px); }
+.service-page-orbit .orbit-core { animation: service-core-pulse 4s ease-in-out infinite; }
+.service-page-orbit .orbit-label { animation: service-label-float 5s ease-in-out infinite alternate; }
+.service-page-orbit .orbit-label:nth-of-type(3) { animation-delay: -1s; }
+.service-page-orbit .orbit-label:nth-of-type(4) { animation-delay: -2s; }
+.service-page-orbit .orbit-label:nth-of-type(5) { animation-delay: -3s; }
+.service-page-orbit .orbit-label:nth-of-type(6) { animation-delay: -4s; }
+
+@keyframes service-core-pulse {
+  50% { box-shadow: 0 25px 55px rgba(20,107,76,.28), inset 0 1px 0 rgba(255,255,255,.25); }
+}
+
+@keyframes service-label-float {
+  to { translate: 0 -7px; }
+}
+
+.service-page-content { padding-block: 74px 90px; background: #fff; }
+.service-page-content .section-wrap { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 35px; }
+.service-page-content .detail-body { max-width: 760px; }
+.service-page-content .detail-body > p:not(.detail-kicker) { font-size: 14px; }
+.service-page-content .detail-body h2 { margin-bottom: 15px; }
+.service-page-content .detail-body h3 { margin: 30px 0 10px; color: #293a30; font: 400 25px/1.2 var(--serif); }
+.service-page-content .detail-body ul { display: grid; gap: 10px; margin: 12px 0 25px; padding-left: 20px; color: #68766d; font-size: 13px; line-height: 1.7; }
+.service-page-content .detail-body li::marker { color: var(--green); }
+.service-page-content .detail-link { min-height: 44px; margin-top: 22px; padding: 0 18px; border-radius: 4px; color: #fff; background: var(--green); font-size: 12px; }
+.service-page-content .detail-link:hover { background: var(--green-dark); }
+.service-page-back { display: inline-flex; margin-top: 21px; color: var(--green); font-size: 12px; font-weight: 700; }
+
 .motion-ready .home-page .motion-reveal,
 .home-page .reveal,
 .home-page .hero-copy > .eyebrow,
@@ -2155,7 +2184,22 @@ summary:focus-visible {
   animation: none;
 }
 
+.home-page .service-card.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .55s ease, transform .55s ease;
+}
+
+.home-page .service-card.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
 @media (max-width: 800px) {
+  .service-page-hero { min-height: auto; }
+  .service-page-content .section-wrap { grid-template-columns: 1fr; gap: 22px; }
+  .service-page-content { padding-block: 55px 65px; }
+
   .home-page .credentials-inner {
     grid-template-columns: 1fr;
     gap: 10px;
@@ -2195,6 +2239,18 @@ summary:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .home-page .service-card.reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .home-page .service-card,
+  .service-page-orbit .orbit-core,
+  .service-page-orbit .orbit-label {
+    animation: none;
+  }
+
   .ai-visibility-controls {
     display: none;
   }
