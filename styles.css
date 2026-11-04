@@ -2287,3 +2287,45 @@ summary:focus-visible {
     gap: 10px;
   }
 }
+
+/* Keep reading and interface text legible across all pages and screen sizes. */
+body p:not(.eyebrow) {
+  font-size: 16px !important;
+  line-height: 1.7;
+}
+
+body li,
+body .faq-list summary {
+  font-size: 15px !important;
+  line-height: 1.65;
+}
+
+body .eyebrow,
+body small,
+body .detail-label,
+body .detail-kicker,
+body .article-byline,
+body .footer-bottom,
+body .footer-nav > span:first-child {
+  font-size: 12px !important;
+}
+
+body .desktop-nav a,
+body .header-cta,
+body .button,
+body .text-link,
+body .footer-nav a,
+body .footer-nav > span:not(:first-child),
+body .industry-list span,
+body .detail-link,
+body .service-page-back,
+body .success-reset,
+body .form-error {
+  font-size: 14px !important;
+}
+
+@media (max-width: 700px) {
+  body p:not(.eyebrow) {
+    font-size: 15px !important;
+  }
+}
